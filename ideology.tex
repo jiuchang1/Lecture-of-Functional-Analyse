@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[UTF8]{ctex}
+\usetikzlibrary{positioning, shapes.geometric, graphs, quotes}
+\linespread{1.5}
+
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+\newcounter{problemname}
+\newenvironment{problem}
+{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{题目\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答. }}{\par}
+\newenvironment{Proof}{\par\noindent\textbf{证明. }}{$\blacksquare$\par}
+\newenvironment{note}{\par\noindent\textbf{题目\arabic{problemname}的注记. }}{\par}
+\newenvironment{define}{\par\noindent\textbf{定义. }}{\par}
+
+\begin{document}
+\bigskip
+\begin{center}
+\begin{tikzpicture}
+    \node[draw] (start) {完备};
+    \node[draw, below = of start] (step 1) {列紧};
+    \node[draw, below = of step 1] (step 2) {有界};
+    \node[draw, left = of step 2] (step 3) {完全有界};
+    \node[draw, right = of step 1] (step 4) {自列紧};
+    \node[draw, below = of step 4] (step 5) {有界闭集};
+    \node[draw, right = of step 4] (step 6) {紧集};
+    \graph{
+        (step 1) -> (start);
+        (step 3) -> (step 2);
+        (step 4) -> (step 1);
+    };
+    \draw[->, >=latex] ([xshift = -1cm]step 1) -- ([xshift = -1cm]step 2) node[midway, left] {};
+    \draw[->, >=latex] ([xshift = 1cm]step 2) -- ([xshift = 1cm]step 1) node[midway, left] {$\mathbb{R}^n$};
+    \draw[->, >=latex] ([xshift = -1cm]step 4) -- ([xshift = -1cm]step 5) node[midway, left] {};
+    \draw[->, >=latex] ([xshift = 1cm]step 5) -- ([xshift = 1cm]step 4) node[midway, left] {$\mathbb{R}^n$};
+    \draw[->, >=latex] ([xshift = -1cm]step 1) -- ([xshift = -1cm]step 3) node[midway, left] {};
+    \draw[->, >=latex] ([xshift = 1cm]step 3) -- ([xshift = 1cm]step 1) node[midway, left] {$\mathbb{R}^n$};
+    \draw[->, >=latex] ([xshift = -1cm]step 4) -- ([xshift = -1cm]step 6) node[midway, left] {};
+    \draw[->, >=latex] ([xshift = 1cm]step 6) -- ([xshift = 1cm]step 4) node[midway, below] {$\{\mathscr{X}, d\}$};
+    \draw[->, >=latex] ([xshift = -1cm]step 6) -- ([xshift = -1cm]step 5) node[midway, left] {};
+    \draw[->, >=latex] ([xshift = 1cm]step 5) -- ([xshift = 1cm]step 6) node[midway, left] {$\mathbb{R}^n$};
+\end{tikzpicture}
+\end{center}
+\end{document}

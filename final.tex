@@ -1,0 +1,336 @@
+\input{mathbookset}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{annotate-equations}
+\usepackage{zhlipsum}
+\title{ \normalsize \textsc{Theorems of Functional Analysis}
+		\\ [2.0cm]
+		\HRule{1.5pt} \\
+		\LARGE \textbf{\uppercase{泛函分析定理整理}
+		\HRule{2.0pt} \\ [0.6cm] \LARGE{Jinhua Wu} \vspace*{10\baselineskip}}
+		}
+\date{}
+\author{}
+\begin{document}
+\maketitle
+\tableofcontents 
+\newpage
+\setcounter{page}{1}
+\chapter{14个定理总结}
+\section{第一章}
+\begin{theorem}[Banach压缩映像原理]
+    对于完备的度量空间$\mathscr{X}$而言，对于到自身的压缩映射$T:\mathscr{X}\to\mathscr{X}$，存在唯一的不动点。
+\end{theorem}
+\begin{proof}
+    我们考虑其上的距离为$\rho$，先证明存在性。任取$x_0\in\mathscr{X}$，作压缩映射的序列$x_1 = Tx_0$，而后不断作$x_2 = Tx_1$，有$x_n = Tx_{n-1}$。在完备的度量空间中，我们要说明这是一个基本列，即可证明其为收敛列。
+
+    我们先来考虑
+    \begin{align*}
+        |x_{n+1} - x_{n}| &= |Tx_{n} - Tx_{n-1}| < \alpha |x_{n} - x_{n-1}| < \cdots < \alpha^{n} |x_1 - x_0| 
+    \end{align*}
+
+    故而我们考虑$\forall n,p\in\mathbb{N}^+$，
+    \begin{align*}
+        |x_{n+p} - x_n| &\leqslant |x_{n+p} - x_{n+p-1}| + |x_{n+p-1} - x_{n+p-2}| + \cdots + |x_{n+1} - x_n| \\
+        & \leqslant \sum\limits_{k=1}^{p} |x_{n+k} - x_{n+k-1}| \\
+        & < \sum\limits_{k=1}^{p} \alpha^{n+k-1} |x_{1} - x_{0}| \\
+        & < \frac{\alpha^n(1-\alpha^p)}{1-\alpha} |x_1 - x_0| \to 0\quad (n\to\infty)
+    \end{align*}
+
+    故而这里构造的$\{x_n\}$是一个基本列，从而有收敛列。下面证明唯一，若存在两个不动点$x^*,x^{**}$，则
+    \begin{align*}
+        |x^* - x^{**}| & = |Tx^* - Tx^{**}| < \alpha |x^* - x^{**}|
+    \end{align*}
+    矛盾，故而$x^* = x^{**}$，因此不动点唯一。
+\end{proof}
+
+\begin{theorem}[Arzelà-Ascoli定理]
+    为了$F\subset C(M)$是列紧的，当且仅当$F$是一致有界且等度收敛的函数族。
+\end{theorem}
+\begin{proof}
+    先证明必要性，已知$C(M)$是完备的，故而等价于$F$是完全有界的，而完全有界集必然是有界集，因此$F$是一致有界的。下面我们证明其等度连续。考虑完全有界即存在有穷$\varepsilon$网，考虑$F$的$\frac{\varepsilon}{3}$网$N(\varepsilon/3)$，即存在有穷的$M = \{\varphi_1,\varphi_2,\cdots,\varphi_n\}$。$\forall \varphi\in F$，我们总能找到$\varphi_i\in M$使得$|\varphi - \varphi_i| < \frac{\varepsilon}{3}$，则对于$\delta = \delta(\varepsilon)$，当$\rho(x_1,x_2)\leqslant \delta$时我们有
+    \begin{align*}
+        |\varphi(x_1) - \varphi(x_2)| &\leqslant |\varphi(x_1) - \varphi_i(x_1)| + |\varphi_i(x_1) - \varphi_i(x_2)| + | \varphi_i(x_2) - \varphi(x_2)| < \varepsilon
+    \end{align*}
+    故而$F$一致有界且等度连续。
+
+    下面证明充分性。如果$F$是一致有界且等度连续的。$\exists \delta = \delta(\frac{\varepsilon}{3})$，使得当$\rho(x_1,x_2)<\delta$时，$\forall \varphi\in F$，$|\varphi(x_1) - \varphi(x_2)| < \varepsilon/3$。而后就此$\delta$，选取空间$M$上的有穷$\delta$网，$N(\delta) = \{x_1,x_2,\cdots,x_n\}$，从而定义映射$T:F\to\mathbb{R}$:
+    \begin{align*}
+        T\varphi \triangleq (\varphi(x_1),\varphi(x_2),\cdots,\varphi(x_n))
+    \end{align*}
+    记$\Tilde{F} = TF$，则$\Tilde{F}$为$\mathbb{R}$中的有界集。而设$|\varphi|\leqslant M_1$，则
+    \begin{align*}
+        \left( \sum\limits_{i=1}^n |\varphi(x_i)|^2 \right)^{1/2}\leqslant \sqrt{n}M_1
+    \end{align*}
+    故而有界。从而$\Tilde{F}$为列紧集，因此$\Tilde{F}$有有穷的$\varepsilon/3$网，记为
+    \begin{align*}
+        \Tilde{N}(\varepsilon/3) = \{T\varphi_1, T\varphi_2,\cdots,T\varphi_m\}
+    \end{align*}
+    从而$\{\varphi_1,\varphi_2,\cdots,\varphi_m\}$也是$\varepsilon$网。故而我们取定$x_r\in N$，从而
+    \begin{align*}
+        |\varphi(x) - \varphi_i(x)| &\leqslant |\varphi(x) - \varphi(x_r)| + |\varphi(x_r) - \varphi_i(x_r)| + |\varphi_i(x_r) - \varphi_i(x)| < \varepsilon
+    \end{align*}
+    故而$F$为完全有界集，进而为列紧的。
+\end{proof}
+
+\begin{theorem}
+    具有相同维数的有穷维赋范空间都是等距同构的。
+\end{theorem}
+\begin{proof}
+    这里我们考虑有穷维赋范空间$\mathscr{X}$上的一组基为$e_1,e_2,\cdots,e_n$，则对于任意$x\in\mathscr{X}$都可以表示为$x = \xi_1e_1 + \cdots + \xi_ne_n$。而后我们考虑任意两个范数$\| \|$与$\| \|_T$，考虑$\|x\|_T = |Tx|$。而$\|Tx\|$在$\mathbb{K}^n$中的范数为$\|x\|_T = |Tx| = \|\xi\| = \left(\sum\limits_{i=1}^n |\xi_i|^2 \right)^{1/2}$。考察函数$p(\xi) = \left|\sum\limits_{i=1}^n \xi_i e_i\right|$。首先$p$对$\xi$是一致连续的
+    \begin{align*}
+        |p(\xi) - p(\eta)| &= p(\xi - \eta) \leqslant \left|\sum\limits_{i=1}^n (\xi_i - \eta_i) e_i \right| \leqslant |\xi - \eta| \left(\sum\limits_{i=1}^n |e_i|^2 \right)^{1/2}
+    \end{align*}
+    而后根据范数的齐次性
+    \begin{align*}
+        |\eta|p(\frac{\eta}{|\eta|}) = p(\eta)
+    \end{align*}
+
+    而由于$S^1 = \{\|x\| = 1\mid \|x\|\in\mathbb{K}^n\}$。且$S^1$是列紧的，故而在上面有最大最小值，从而
+    \begin{align*}
+        C_1 \leqslant p(\eta) \leqslant C_2 \quad \eta \in S^1
+    \end{align*}
+    则考虑$\xi\in \mathscr{X}$，而$\frac{\xi}{|\xi|}\in S^1$，则
+    \begin{align*}
+        C_1 \leqslant & p(\frac{\xi}{|\xi|}) \leqslant C_2 \\
+        C_1 \leqslant & \frac{1}{|\xi|}p(\xi) \leqslant C_2 \\
+        C_1 |\xi| \leqslant & p(\xi) \leqslant C_2 |\xi|
+    \end{align*}
+
+    下面证明$C_1>0$，若$C_1 = 0$意味着$\exists \xi^*\in S_1$，使得$\xi_1 e_1 + \xi_2 + \cdots + \xi_n e_n = 0$则$\xi^* = 0$矛盾，故而$C_1>0$，改写上式
+    \begin{align*}
+        C_1 \|x\|\leqslant \|x\|_T \leqslant C_2\|x\|
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    Hilbent空间中Bessel不等式和Parseval等式
+\end{theorem}
+\begin{proof}
+    Bessel Ineq即为
+    \begin{align*}
+        \|x\| \geqslant \sum\limits_{\alpha\in A} \left|(x,e_{\alpha})\right|^2
+    \end{align*}
+
+    我们考虑$\forall x\in\mathscr{X}$，而由于该空间为Hilbert空间，我们总能找到$e_1,e_2,\cdots,e_m\in A$，使得
+    \begin{align*}
+        \left|x - \sum\limits_{i=1}^m (x,e_i)e_i \right| & = \|x\| - \sum\limits_{i=1}^m |(x,e_i)|^2 \geqslant 0
+    \end{align*}
+    而由此可见，对于$\forall m\in\mathbb{N}$，适合$|(x,e_{\alpha})| > \frac{1}{m}$的$a\in A$至多只有有穷个，从而$(x,e_{\alpha}) \neq 0$的$\alpha$只有可数个，故而我们对$m$取极限即可得到。
+    \begin{align*}
+        \sum\limits_{\alpha\in A_f} |(x,e_a)|^2 \leqslant \|x\|
+    \end{align*}
+
+    而Parseval Eq为对于正交完备规范集而言的。
+    \begin{align*}
+        \|x\| = \sum\limits_{\alpha\in A} \left|(x,e_{\alpha})\right|^2
+    \end{align*}
+    由于$\mathscr{X}$为完备集，从而$\forall x\in\mathscr{X}$，都有
+    \begin{align*}
+        x = \sum\limits_{\alpha\in A} (x,e_a)e_a 
+    \end{align*}
+    故而按照上述方法可以立即得到二者相等。反证法也可以，即若$LHS - RHS = y$，则$y\notin\text{span}\{e_1,e_2,\cdots,e_n,\cdots\}$，显然与完备集矛盾。
+\end{proof}
+
+\section{第二章}
+\begin{theorem}[Riesz表示定理]
+    在Hilbert空间$\mathscr{X}$中，对于任意的连续线性泛函$f$，必然存在唯一的$y_f\in \mathscr{X}$使得$f(x) = (x,y_f)$。
+\end{theorem}
+\begin{proof}
+    先证明存在性。我们考虑这样一个集合，考虑$\exists x_0$使得$f(x_0)\neq 0$且$\|x_0\| = 1$，而后考虑集合$M \triangleq \{x\mid f(x) = 0\}$。则作如下的分解，考虑$x = \alpha x_0 + y$，其中$y \in M$。而两边作用$f$得到$f(x) = \alpha f(x_0)$。现在我们来探究$\alpha$的取值。两侧对$x_0$作内积得到$(x,x_0) = \alpha$。这里若$(y,x_0)\neq 0$，由于$x_0\perp M$。故而$f(x) = (x,x_0)f(x_0) = (x, \overline{f(x_0)}x_0)$。现在我们来探讨唯一性，若存在两个$y,y^{\prime}$使得$(x,y) = (x,y^{\prime}) = f(x)$，则$(x,y-y^{\prime})=0$。而后我们取$x = y - y^{\prime}$即得$y = y^{\prime}$。唯一性证明结束，故而Riesz表示定理成立。
+\end{proof}
+
+\begin{theorem}[开映射定理]
+    若$\mathscr{X},\mathscr{Y}$都是$B$空间，且$f\in\mathscr{L}(\mathscr{X},\mathscr{Y})$，而$f$为满射，则$f$为开映射。
+\end{theorem}
+\begin{proof}
+    证明分三步进行。首先考虑在$\mathscr{X},\mathscr{Y}$中的开球分别为$B(x_0,r),U(y_0,r)$。原命题等价于$U(\theta,\delta)\subset TB(\theta,1)$。这是由于开映射等价于证明$TB(x_0,r)\supset U(Tx_0,r\delta)$，而由于其线性性质，即为$U(\theta,\delta)\subset TB(\theta,1)$。必要性是显然的，我们来证明充分性，考虑$\forall y_0\in T(W)$，按定义有$\exists x_0\in W$使得$Tx_0 = y_0$，由于$W$为开集，则存在$\exists B(x_0,r)\in W$，取$\varepsilon = r\delta$，使得
+    \begin{align*}
+        U(Tx_0, \varepsilon) \subset TB(x_0, r) \subset T(W)
+    \end{align*}
+    故而为内点。
+
+    第二步，证明$U(\theta,3\delta) = \overline{TB(\theta,1)}$。这里我们考虑$\mathscr{Y} = f(\mathscr{X}) = \bigcup\limits_{n=1}^{\infty} TB(\theta, n)$。由于$f$为满射，必然存在某个$n$使得$TB(\theta, n)$不为疏集，即有内点。而因此$\exists U(y_0,r)\subset \overline{TB(\theta, n)}$。我们考虑对称凸集的性质
+    \begin{align*}
+        U(\theta,r) = \frac{1}{2}(U(y_0, r) + U(-y_0,r)) \subset \overline{TB(\theta, n)}
+    \end{align*}
+    这里我们取$\delta = \frac{r}{3n}$即可得到。
+
+    第三步，证明$U(\theta,\delta)\subset TB(\theta,1)$。我们可以考虑$\forall y_0\in U(\theta,\delta)$，要证明存在$x_0\in B(\theta,1)$使得$y_0 = f(x_0)$，我们利用逐次逼近法。先考虑存在$x_1\in B(\theta, \frac{1}{3})$，使得$\| y_0 - f(x_1)\| \leqslant \frac{1}{3}\delta$。而后我们考虑$y_1 = y_0 - f(x_2)$，而后构造出$x_2\in B(\theta,\frac{1}{3^2}\delta)$使得$\| y_1 - f(x_2)\| \leqslant \frac{1}{3^2}\delta$。而后我们构造出的$x_0 = \sum\limits_{n=1}^{\infty} x_n$，而$\|y_0 - f(x_0)\| = \|y_1 - f(x_1+x_2+\cdots)\| = \frac{1}{3^n}\delta\to 0$，故而$y_0 = f(x_0)$且$\|x_0\| \leqslant \frac{1}{2}$，因此为内点。
+\end{proof}
+
+\begin{theorem}[闭图像定理]
+    设$\mathscr{X},\mathscr{Y}$是$B$空间，若$T$是$\mathscr{X}\to\mathscr{Y}$的闭线性算子，且$D(T)$是闭的，则$T$是连续的。
+\end{theorem}
+\begin{proof}
+    那么我们要证明连续。先在$D(T)$上构造范数，这里$D(T)$由于是闭的也为$B$空间。构造
+    \begin{align*}
+        \|x\|_G = \|x\| + \|Tx\|\quad (\forall x\in D(T))
+    \end{align*}
+
+    现在证明赋范的$D(T)$也是$B$空间，而
+    \begin{align*}
+        \|x_m - x_n\|_G = \|x_m - x_n\| + \|T(x_m - x_n)\| \to 0
+    \end{align*}
+    我们要证明其收敛，首先由第一项可知存在$x^*\in\mathscr{X}$使得$x_m\to x^*$，而同时$\|T(x_m - x^*)\|\to 0$，因此这里的范数也是完备的，同样收敛于$x^*$。而我们也知道$\|x\|_G$比$\|x\|$强。由等价范数定理，我们可知存在$M > 0$使得
+    \begin{align*}
+        \|Tx\| \leqslant \|x\|_G \leqslant M\|x\|
+    \end{align*}
+    这里可以发现$\|T\|$也是有界的。由于$\|T\|\leqslant \|Tx\| / \|x\| \leqslant M$。故而$T$连续。
+\end{proof}
+
+\begin{theorem}[共鸣定理或一致有界定理]
+    设$\mathscr{X}$是$B$空间，而$\mathscr{Y}$是$B^*$空间，如果$W\subset\mathscr{L}(\mathscr{X},\mathscr{Y})$，有$\sup\limits_{A\in W} Ax < \infty\ (\forall x\in\mathscr{X})$，则存在常数$M$使得，$\|A\|\leqslant M\ (\forall A\in W)$。
+\end{theorem}
+\begin{proof}
+    我们构建一个范数$\|x\|_W = \|x\| + \sup\limits_{A\in W} |Ax|$。而显然会有$\|x\|_W$强于$\|x\|$。现在我们说明构建的赋范线性空间$(\mathscr{X},\|\cdot\|_W)$是完备的（即$B$空间）。
+    
+    考虑
+    \begin{align*}
+        \|x_n - x_m\|_W = \|x_n - x_m\| + \sup\limits_{A\in W} |A(x_n - x_m)|
+    \end{align*}
+    而$\|x\|$是完备的，故而存在$\exists x_0\in\mathscr{X}$使得$x_n\to x_0$，而因此$\sup\limits_{A\in W} |Ax_m| = \sup\limits_{A\in W} |Ax_0|$，故而其为完备的。且由于$\|x\|_W$强于$\|x\|$，故而由等价范数定理，存在常数$M\geqslant 0$使得
+    \begin{align*}
+        \sup\limits_{A\in W} |Ax| \leqslant \|x\|_G \leqslant M\|x\|
+    \end{align*}
+    则显然有$\|A\|\leqslant M$。
+\end{proof}
+
+\begin{theorem}[Banach-Steinhaus 定理]
+    设$\mathscr{X}$是$B$空间，$\mathscr{Y}$是$B^*$空间，$M$是$\mathscr{X}$的某个稠密子集。若$A_n,A\in\mathscr{L}(\mathscr{X},\mathscr{Y})$，则$\forall x\in\mathscr{X}$都有
+    \begin{align*}
+        \lim\limits_{n\to\infty} A_n x = Ax
+    \end{align*}
+    的充要条件是：
+    \begin{itemize}
+        \item[1] $\|A_n\|$有界
+        \item[2] $\lim\limits_{n\to\infty} A_n x = Ax$对$\forall x\in M$成立
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    我们先来证明必要性。由于$A_n, A\in\mathscr{L}(\mathscr{X},\mathscr{Y})$，则$\sup\limits_{n\in \mathbb{N}} |A_n x|$有界，且由题设，满足共鸣定理，故而显然$\|A_n\|$有界。而条件2是显然的。
+
+    而后考虑充分性，我们由条件2，只需要说明那些$\mathscr{X}\backslash M$的元素。由于$M$为$\mathscr{X}$的某个稠密子集，即$\bar{M} = \mathscr{X}$。因此$\forall x\in \mathscr{X}\backslash M$，总存在序列$\{x_n\}\subset M$，满足$x_n\to x_0$，且$A_n x_n \to Ax$。而我们不妨用最朴素的方法
+    \begin{align*}
+        |A_n x - Ax| & \leqslant |A_n x - A_n x_n| + |A_n x_n - A_n x_n| + |A x_n - Ax|
+    \end{align*}
+    这里我们可以巧妙的控制$x$与$x_n$中$n>N$的部分，巧妙的达到上式小于$\varepsilon$，故而成立。
+\end{proof}
+
+\begin{theorem}[实Hahn-Banach定理]
+    设$\mathscr{X}$是实线性空间，而$p$是定义在$\mathscr{X}$上的次线性泛函，$\mathscr{X}_0$为$\mathscr{X}$的实线性子空间，$f_0$是定义在$\mathscr{X}_0$上的实线性泛函，且满足$f_0(x)\leqslant p(x)\ (\forall x\in \mathscr{X}_0)$。那么$\mathscr{X}$上必然存在一个实线性泛函$f$满足
+    \begin{itemize}
+        \item[1] $f(x) = f_0(x)$，$\forall x\in\mathscr{X}_0$；
+        \item[2] $f(x) \leqslant p(x)$，$\forall x\in \mathscr{X}$。
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    这里的证明是一步步构建的，首先先构造一个略大于$\mathscr{X}_0$的子流形。考虑任一$y_0\in\mathscr{X}\backslash\mathscr{X}_0$，构造$\mathscr{X}_1\triangleq\{x + \alpha y_0\mid x\in\mathscr{X}_0\}$，我们在其上定义的延拓函数$f_1$为
+    \begin{align*}
+        f_1(x + \alpha y_0) = f_0(x) + \alpha f_1(y_0)
+    \end{align*}
+    而后我们这里就需要确定$f_1(y_0)$的值。而要求$f_1$受$p$控制，即我们这里就可以任意取$x$来控制
+    \begin{align*}
+        f_1(x + \alpha y_0) \leqslant p(x + \alpha y_0)
+    \end{align*}
+    两侧同时除以$|\alpha|$，考虑$\alpha$的正负性，则有
+    \begin{align*}
+        f_1(y_0 - z) &\leqslant p(y_0 - z), \quad \forall z\in\mathscr{X}_0, \\
+        f_1(-y_0 + y) &\leqslant p(-y_0 + y),\quad \forall y\in\mathscr{X}_0.
+    \end{align*}
+    或
+    \begin{align*}
+        f_0(y) - p(-y_0 + y) \leqslant f_1(y_0) \leqslant f_0(z) + p(y_0 - z)
+    \end{align*}
+    而$f_1(y)$取在两侧的任意值即可。且为了能取到合适的$f_1(y_0)$必须且仅须
+    \begin{align*}
+        \sup\limits_{y\in\mathscr{X}_0} \{f_0(y) - p(-y_0 + y)\} \leqslant \inf\limits_{z\in\mathscr{X}_0} \{f_0(z) + p(y_0 - z)\}
+    \end{align*}
+    而这里即
+    \begin{align*}
+        f_0(z) - f_0(y) &= f_0(z-y) \leqslant p(z-y) = p(z - y_0 + y_0 - y) \leqslant p(z- y_0) + p(y_0 - y)
+    \end{align*}
+    故而必然满足。即我们就确定了线性子流形上的一个延拓的泛函。而后我们需要把$f_0$继续延拓到整个$\mathscr{X}$上去，我们利用 Zorn 引理，令
+    \begin{align*}
+        \mathscr{F} \triangleq \left\lbrace (\mathscr{X}_{\Delta}, f_{\Delta}) \left|
+        \begin{array}{l}
+            \mathscr{X}_0\subset \mathscr{X}_{\Delta} \subset \mathscr{X} \\
+            \forall x\in\mathscr{X}_0\Rightarrow f_{\Delta}(x) = f_0(x) \\
+            \forall x\in\mathscr{X}_{\Delta} \Rightarrow f_{\Delta}(x) \leqslant p(x)
+        \end{array}
+ \right.   \right\rbrace
+    \end{align*}
+
+    Zorn引理规定若每一个全序子集都有上界，则存在极大元。我们在$\mathscr{F}$中引入序关系，若$(\mathscr{X}_{\Delta_1},f_{\Delta_1})\prec (\mathscr{X}_{\Delta_2},f_{\Delta_2})$，则$\mathscr{X}_{\Delta_1}\subset \mathscr{X}_{\Delta_2}$，且$f_{\Delta_1}(x) = f_{\Delta_2}(x)\ (\forall x\in \mathscr{X}_{\Delta_1})$。
+
+    于是$\mathscr{F}$成为一个半序集，又考虑$M$是$\mathscr{F}$中的任一个全序子集，令
+    \begin{align*}
+        \mathscr{X}_M \triangleq \bigcup\limits_{(\mathscr{X}_{\Delta},f_{\Delta})\in M} 
+ \{\mathscr{X}_{\Delta}\}
+    \end{align*}
+    以及
+    \begin{align*}
+        f_M(x) = f_{\Delta}(x), \quad (\forall x\in\mathscr{X}_{\Delta},\ (\mathscr{X}_{\Delta}, f_{\Delta})\in M)
+    \end{align*}
+    从而这里规定的$(\mathscr{X}_M,f_M)$为$M$的一个上界，依Zorn引理其存在极大元，记为$(\mathscr{X}_{\Lambda}, f_{\Lambda})$。而后我们来证明$\mathscr{X}_{\Lambda} = \mathscr{X}$。用反证法，倘若不然则可以构造出$(\Tilde{\mathscr{X}}_{\Lambda}, \Tilde{f}_{\Lambda})\in \mathscr{F}$，从而与极大性矛盾。因此$\mathscr{X}_{\Lambda} = \mathscr{X}$从而$f_{\Lambda}$即为我们所求的$f$。
+\end{proof}
+
+\begin{theorem}[复Hahn-Banach定理]
+    设$\mathscr{X}$是复线性空间，且$p$为定义在$\mathscr{X}$上的半范数，$\mathscr{X}_0$是$\mathscr{X}$的线性子空间，$f_0$为定义在$\mathscr{X}_0$上的线性泛函，并满足$|f_0(x)| \leqslant p(x),\ \forall x\in\mathscr{X}$。那么$\mathscr{X}$上必然有一个线性泛函$f$满足
+    \begin{itemize}
+        \item[1] $f(x) = f_0(x)$，$x\in\mathscr{X}_0$；
+        \item[2] $|f(x)| \leqslant p(x)$，$x\in\mathscr{X}$。
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    这里的复线性空间，我们的证明仅需将其转换为实线性空间的证明。我们定义$g_0(x) = \text{Re} f_0(x)$。那么我们就会得到$g_0(x)\leqslant p(x)$。故而我们可以延拓其至$\mathscr{X}$上，必有实线性泛函$g$，使得$g(x)\leqslant p(x)$，$\forall x\in\mathscr{X}$，且$g_0(x) = g(x)$，$\forall x\in \mathscr{X}_0$。
+
+    而后我们来定义$f(x)\triangleq g(x) - ig(ix)$。则$f(x) = g_0(x) - ig_0(ix) = \text{Re}f_0(x) + i\text{Im}f_0(x) = f_0(x)$，且由于$f(ix) = g(ix) - ig(ix) = i[-ig(ix) + g(x)] = if(x)$，因此$f$是复齐次性的。剩下的我们还要说明在$\mathscr{X}$上，$|f(x)|$受到$p(x)$控制，考虑$f(x)\neq 0$，令
+    \begin{align*}
+        \theta \triangleq \arg f(x),
+    \end{align*}
+    故而
+    \begin{align*}
+        |f(x)| &= e^{-i\theta} f(x) = f(e^{-i\theta}x) = g(e^{-i\theta}x) \leqslant p(e^{-i\theta} x) = p(x)
+    \end{align*}
+    因此存在该线性泛函。
+\end{proof}
+
+
+
+\begin{theorem}[Hahn-Banach 定理的保范延拓推论]
+    设$\mathscr{X}$是$B^*$空间，$\mathscr{X}_0$是$\mathscr{X}$的线性子空间，而$f_0$是定义在$\mathscr{X}_0$上的有界线性泛函，则在$\mathscr{X}$上必然存在有界线性泛函$f$满足：
+    \begin{itemize}
+        \item $f(x) = f_0(x)$，$\forall x\in\mathscr{X}_0$，延拓条件
+        \item $\|f\| = \|f_0\|_0$，保范条件
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    在$\mathscr{X}$上定义$p(x)\triangleq \|f_0\|_0 \cdot\|x\|$，那么$p(x)$是$\mathscr{X}$上的半范数，从而必然存在$\mathscr{X}$上的线性泛函$f(x)$使得
+    \begin{align*}
+        f(x) = f_0(x),\quad x\in\mathscr{X}_0
+    \end{align*}
+    以及
+    \begin{align*}
+        |f(x)|\leqslant p(x) \leqslant \|f_0\|_0 \cdot\|x\| 
+    \end{align*}
+    从而有$\|f\|\leqslant \|f_0\|$，且又由$f(x)$在$\mathscr{X}_0$上恒等于$f_0$，则$\|f\|\geqslant \|f_0\|_0$，从而二者相等。
+\end{proof}
+
+\begin{theorem}
+    
+\end{theorem}
+
+
+
+
+
+
+
+
+
+\end{document}
